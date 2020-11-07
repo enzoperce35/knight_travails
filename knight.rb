@@ -1,9 +1,10 @@
 require_relative 'node.rb'
 
 class Knight < Node
-  attr_accessor :path, :finish, :paths, :visited
+  attr_accessor :start, :path, :finish, :paths, :visited
 
   def initialize(start, finish)
+    @start = start
     @path = Node.new(start)
     @finish = finish
     @paths = [start]
@@ -12,14 +13,14 @@ class Knight < Node
 
   def possible_moves(coordinate, used_moves)
     possible_moves =
-      [coordinate[0] + 2, coordinate[1] - 1],
-      [coordinate[0] + 2, coordinate[1] + 1],
+      [coordinate[0] + 1, coordinate[1] + 2],
+      [coordinate[0] + 1, coordinate[1] - 2],
+      [coordinate[0] - 1, coordinate[1] - 2],
+      [coordinate[0] - 1, coordinate[1] + 2],
       [coordinate[0] - 2, coordinate[1] - 1],
       [coordinate[0] - 2, coordinate[1] + 1],
-      [coordinate[0] + 1, coordinate[1] - 2],
-      [coordinate[0] + 1, coordinate[1] + 2],
-      [coordinate[0] - 1, coordinate[1] - 2],
-      [coordinate[0] - 1, coordinate[1] + 2]
+      [coordinate[0] + 2, coordinate[1] + 1],
+      [coordinate[0] + 2, coordinate[1] - 1]
     filter(possible_moves, used_moves)
   end
 
@@ -36,8 +37,23 @@ class Knight < Node
       temp = path
       temp = temp.next_move until temp.next_move.nil?
       temp.next_move = Node.new(move, current)
-      return path if move == finish
+      return temp.next_move.previous_move if move == finish
     end
     travail
+  end
+
+  def show(root, count = 1, arr = [start, finish])
+    return puts message(count, arr) if root.nil?
+    arr.insert(1, root)
+    count += 1
+    temp = path
+    temp = temp.next_move until temp.next_move.move == root
+    show(temp.previous_move, count, arr)
+  end
+
+  def message(count, arr)
+    display = "You made it in #{count} moves!  Here's your path:"
+    display += "\n#{arr.shift}" until arr.length == 0
+    display
   end
 end

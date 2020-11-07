@@ -6,5 +6,4 @@ class Node
     @previous_move = previous_move
     @next_move = next_move
   end
-
 end
