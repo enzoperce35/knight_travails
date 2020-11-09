@@ -1,9 +1,9 @@
-require_relative 'knight.rb'
+require_relative 'game_board.rb'
 
 def knight_moves(start, finish)
-  knight = Knight.new(start, finish)
+  knight = GameBoard.new(start, finish)
   path = knight.travail
-  knight.show path
+  knight.display(path)
 end
 
 knight_moves([3,3],[4,3])
